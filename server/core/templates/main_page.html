@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block chat %}
+    {% if request.user.is_authenticated %}
+        <div style="display: flex; align-items: end; flex-direction: row;">
+            <form style="overflow: hidden; display: flex;">
+                <label style="display: none;">
+                    <input type="text" placeholder="Name">
+                </label>
+                <label style="width: 100%;">
+                    <textarea placeholder="Message..." tabindex="29" spellcheck="true" autocomplete="false" rows="1" style="width: 100%; display: block; padding: 10px 8px; resize: none;"></textarea>
+                    <input type="text" placeholder="Write a message..." style="display: none;">
+                </label>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="not_authenticated" style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
+            <div class="authentication-message">
+                <div>Выберите чат для начала общения</div>
+                <button>Создать новый чат</button>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
