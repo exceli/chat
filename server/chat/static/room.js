@@ -80,6 +80,20 @@ function connect() {
             case "chat_message":
                 chatLog.value += data.user + ": " + data.message + "\n";
                 break;
+            case "private_message":
+                chatLog.value += "PM from " + data.user + ": " + data.message + "\n";
+                break;
+            case "private_message_delivered":
+                chatLog.value += "PM to " + data.target + ": " + data.message + "\n";
+                break;
+            case "chat_messages":
+                chatLog.value = "";
+
+                for (let i = data.messages.length - 1; 0 <= i; i--) {
+                    const message = data.messages[i];
+                    chatLog.value += message.user + ": " + message.content + "\n";
+                }
+                break;
             default:
                 console.error("Unknown message type!");
                 break;
@@ -93,6 +107,11 @@ function connect() {
         console.log("WebSocket encountered an error: " + err.message);
         console.log("Closing the socket.");
         chatSocket.close();
-    }
+    };
+    onlineUsersSelector.onchange = function() {
+        chatMessageInput.value = "/pm " + onlineUsersSelector.value + " ";
+        onlineUsersSelector.value = null;
+        chatMessageInput.focus();
+    };
 }
 connect();

@@ -14,12 +14,14 @@ class ChatConsumer(WebsocketConsumer):
         self.room_group_name = None
         self.room = None
         self.user = None
+        self.user_inbox = None
 
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = f'chat_{self.room_name}'
         self.room = Room.objects.get(name=self.room_name)
         self.user = self.scope['user']
+        self.user_inbox = f'inbox_{self.user.username}'
 
         self.accept()
 
@@ -33,7 +35,28 @@ class ChatConsumer(WebsocketConsumer):
             'users': [user.username for user in self.room.online.all()],
         }))
 
+        messages = Message.objects.filter(room=self.room).order_by('-timestamp')[:10]
+        serialized_messages = []
+        for message in messages:
+            serialized_messages.append({
+                'user': message.user.username,
+                'content': message.content,
+                'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            })
+
+        self.send(json.dumps({
+            'type': 'chat_messages',
+            'messages': serialized_messages,
+        }))
+
         if self.user.is_authenticated:
+            # Добавление в группу личного чата
+            async_to_sync(self.channel_layer.group_add)(
+                self.user_inbox,
+                self.channel_name,
+            )
+
+            # Оповещение о входе пользователя
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -50,6 +73,10 @@ class ChatConsumer(WebsocketConsumer):
         )
 
         if self.user.is_authenticated:
+            async_to_sync(self.channel_layer.group_add)(
+                self.user_inbox,
+                self.channel_name,
+            )
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -62,6 +89,29 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+
+        if not self.user.is_authenticated:
+            return
+
+        if message.startswith('/pm '):
+            split = message.split(' ', 2)
+            target = split[1]
+            target_msg = split[2]
+
+            async_to_sync(self.channel_layer.group_send)(
+                f'inbox_{target}',
+                {
+                    'type': 'private_message',
+                    'user': self.user.username,
+                    'message': target_msg,
+                }
+            )
+            self.send(json.dumps({
+                'type': 'private_message_delivered',
+                'target': target,
+                'message': target_msg,
+            }))
+            return
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
@@ -80,4 +130,10 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(event))
 
     def user_leave(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def private_message(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def private_message_delivered(self, event):
         self.send(text_data=json.dumps(event))
