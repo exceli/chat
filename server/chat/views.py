@@ -1,16 +1,17 @@
-import json
-
 from django.shortcuts import render
-from django.utils.safestring import mark_safe
+from django.views.generic import TemplateView
+from django.views import View
+
+from .models import Room
 
 
-def index(request):
-    """Главная страница"""
-    return render(request, 'index.html', {})
+class ChatsView(TemplateView):
+    template_name = 'index.html'
 
 
-def room(request, room_name):
-    """"""
-    return render(request, 'room.html', {
-        'room_name_json': mark_safe(json.dumps(room_name))
-    })
+class RoomView(View):
+    def get(self, request, room_name):
+        chat_room, created = Room.objects.get_or_create(name=room_name)
+        return render(request, 'room.html', {
+            'room': chat_room
+            })
