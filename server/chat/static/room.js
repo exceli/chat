@@ -65,8 +65,20 @@ function connect() {
         console.log(data);
 
         switch (data.type) {
+            case "user_list":
+                for (let i = 0; i < data.users.length; i++) {
+                    onlineUsersSelectorAdd(data.users[i]);
+                }
+                break;
+            case "user_join":
+                chatLog.value += data.user + " joined the room.\n";
+                onlineUsersSelectorAdd(data.user);
+                break;
+            case "user_leave":
+                chatLog.value += data.user + " left the room.\n";
+                onlineUsersSelectorRemove(data.user);
             case "chat_message":
-                chatLog.value += data.message + "\n";
+                chatLog.value += data.user + ": " + data.message + "\n";
                 break;
             default:
                 console.error("Unknown message type!");
