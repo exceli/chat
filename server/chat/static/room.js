@@ -47,6 +47,7 @@ let chatSocket = null;
 
 function connect() {
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + roomName + "/");
+    console.log(chatSocket);
 
     chatSocket.onopen = function(e) {
         console.log("Successfully connected to the WebSocket.");

@@ -1,29 +1,45 @@
 <template>
   <div class="chat-list">
-    <div v-for="chat in chats" :key="chat.id" @click="selectChat(chat)" :class="{ active: chat === selectedChat }">
-      {{ chat.name }}
-    </div>
+    <ul class="chat-list__list">
+      <li v-for="room in rooms" :key="room.id" @click="selectRoom(room)">
+        {{ room.name }} ({{ room.online[0] }})
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-  props: ['chats', 'selectedChat'],
+  data() {
+    return {
+      rooms: []
+    };
+  },
+  mounted() {
+    this.fetchChatRooms();
+  },
   methods: {
-    selectChat(chat) {
-      this.$emit('chat-selected', chat);
+    fetchChatRooms() {
+      axios.get("http://localhost:8000/chat/")
+        .then(response => {
+          this.rooms = response.data;
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    selectRoom(room) {
+      this.$emit('room-selected', room);
     }
   }
 };
 </script>
 
-<style scoped>
-.chat-list div {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.chat-list div.active {
-  background-color: #ccc;
+<style>
+.chat-list {
+    border-right: 1px solid white;
 }
 </style>
