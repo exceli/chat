@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import ChatList from '../ChatList.vue';
-import ChatMessages from '../ChatMessages.vue';
+import ChatList from './Messanger/ChatList.vue';
+import ChatMessages from './Messanger/ChatMessages.vue';
 
 export default {
   components: {

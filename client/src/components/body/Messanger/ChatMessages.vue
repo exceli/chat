@@ -12,17 +12,16 @@
         </div>
       </div>
     </div>
-    <div>
-      <label for="onlineUsers">Online users</label>
-      <select multiple class="form-control" id="onlineUsersSelector" v-model="selectedUser">
-        <option v-for="user in onlineUsers" :value="user" :key="user">{{ user }}</option>
-      </select>
-    </div>
+    <OnlineUsersList :online-users="onlineUsers" :selected-user="selectedUser"></OnlineUsersList>
   </div>
 </template>
 
 <script>
+import OnlineUsersList from "./OnlineUsersList.vue";
 export default {
+  components: {
+      OnlineUsersList,
+  },
   props: {
     room: {
       type: Object,
@@ -67,7 +66,7 @@ export default {
             this.onlineUsers = data.users;
             break;
           case "user_join":
-            this.chatLogContent += data.user + " joined the room.\n";
+            this.chatLogContent += "\n" + data.user + " joined the room.\n";
             this.onlineUsers.push(data.user);
             break;
           case "user_leave":
@@ -105,18 +104,21 @@ export default {
         console.log("Closing the socket.");
         this.chatSocket.close();
       };
+      onlineUsersSelector.onchange = function() {
+        chatMessageInput.value = "/pm " + onlineUsersSelector.value + " ";
+        onlineUsersSelector.value = null;
+        chatMessageInput.focus();
+    };
     },
     sendMessage() {
       if (this.message.length === 0) return;
-      console.log(this.message);
       this.chatSocket.send(JSON.stringify({
         type: 'chat_message',
         user: this.message.user,
         message: this.message,
       }));
       this.message = '';
-      console.log(this.message)
-    }
+    },
   }
 };
 </script>
