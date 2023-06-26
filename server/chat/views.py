@@ -19,10 +19,12 @@ class MessagesAPIView(generics.ListAPIView):
 
     queryset = Message.objects.all()
     serializer_class = MessageSerializers
-    permission_classes = permissions.IsAuthenticated
+    # permission_classes = permissions.IsAuthenticated
 
 
-# class ChatsView(View):
+# class RoomsView(View):
+#     """Представление для получения списка комнат чата"""
+#
 #     def get(self, request):
 #         rooms = Room.objects.all()
 #         return render(request, 'index.html', {
@@ -30,7 +32,9 @@ class MessagesAPIView(generics.ListAPIView):
 #         })
 #
 #
-# class RoomView(View):
+# class MessagesView(View):
+#     """Представление получения истрии сообщений чата"""
+#
 #     def get(self, request, room_name):
 #         chat_room, created = Room.objects.get_or_create(name=room_name)
 #         return render(request, 'room.html', {
