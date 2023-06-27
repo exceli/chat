@@ -4,10 +4,10 @@
       <Header />
     </header>
     <main>
-       <Main />
+      <Main />
     </main>
     <footer>
-        <Footer />
+      <Footer />
     </footer>
   </div>
 </template>

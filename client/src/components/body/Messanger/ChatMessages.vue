@@ -1,10 +1,7 @@
 <template>
   <div class="messages">
     <div class="messages-container">
-      <div class="messages-history">
-        <label for="chatLog">Room: #{{ room.name }}</label>
-        <textarea rows="10" class="form-control" id="chatLog" readonly v-model="chatLogContent"></textarea>
-      </div>
+      <MessagesHistory :room="room" :value="chatLogContent" />
       <div class="messages-input-group">
         <input type="text" class="form-control" id="chatMessageInput" placeholder="Enter your chat message" v-model="message">
         <div class="input-group-append">
@@ -12,14 +9,17 @@
         </div>
       </div>
     </div>
-    <OnlineUsersList :online-users="onlineUsers" :selected-user="selectedUser"></OnlineUsersList>
+    <OnlineUsersList :online-users="onlineUsers" :selected-user="selectedUser" />
   </div>
 </template>
 
+
 <script>
 import OnlineUsersList from "./OnlineUsersList.vue";
+import MessagesHistory from "./MessagesHistory.vue";
 export default {
   components: {
+      MessagesHistory,
       OnlineUsersList,
   },
   props: {
@@ -112,6 +112,7 @@ export default {
     },
     sendMessage() {
       if (this.message.length === 0) return;
+      console.log(this.message);
       this.chatSocket.send(JSON.stringify({
         type: 'chat_message',
         user: this.message.user,
