@@ -1,8 +1,8 @@
 <template>
   <div class="chat-list">
-    <ul class="chat-list__list">
-      <li v-for="room in rooms" :key="room.id" @click="selectRoom(room)">
-        {{ room.name }} ({{ room.online[0] }})
+    <ul class="list-reset">
+      <li class="chat-dialog chat-item" v-for="room in rooms" :key="room.id" @click="selectRoom(room)">
+        {{ room.name }} {{ room.online[0] }}
       </li>
     </ul>
   </div>
@@ -25,7 +25,6 @@ export default {
       axios.get("http://localhost:8000/chat/")
         .then(response => {
           this.rooms = response.data;
-          console.log(response.data);
         })
         .catch(error => {
           console.error(error);
@@ -39,7 +38,16 @@ export default {
 </script>
 
 <style>
-.chat-list {
-    border-right: 1px solid white;
+.chat-item {
+    padding: 15px;
+}
+
+.chat-item:not(:last-child) {
+    border-bottom: 1px solid #424242;
+}
+
+.chat-dialog {
+    height: 63px;
+    cursor: pointer;
 }
 </style>

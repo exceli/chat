@@ -4,32 +4,28 @@
       <Header />
     </header>
     <main>
-      <Main />
+      <ChatMain />
     </main>
     <footer>
       <Footer />
-    </footer>
+      </footer>
   </div>
 </template>
 
 <script>
 import Header from "./components/header/Header.vue";
-import Main from "./components/body/Main.vue";
+import ChatMain from "./components/body/ChatMain.vue";
 import Footer from "./components/footer/Footer.vue";
 
 export default {
   components: {
       Header,
-      Main,
+      ChatMain,
       Footer,
   }
 };
 </script>
 
 <style>
-.container {
-    max-width: 100%;
-    margin: auto;
-    padding: 0 160px;
-}
+
 </style>

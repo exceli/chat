@@ -3,13 +3,20 @@
     <div class="messages-container">
       <MessagesHistory :room="room" :value="chatLogContent" />
       <div class="messages-input-group">
-        <input type="text" class="form-control" id="chatMessageInput" placeholder="Enter your chat message" v-model="message">
+        <input
+          type="text"
+          class="form-control"
+          id="chatMessageInput"
+          placeholder="Enter your chat message"
+          v-model="message"
+          @keydown.enter="sendMessage"
+        >
         <div class="input-group-append">
           <button class="btn btn-success" id="chatMessageSend" type="button" @click="sendMessage">Send</button>
         </div>
       </div>
     </div>
-    <OnlineUsersList :online-users="onlineUsers" :selected-user="selectedUser" />
+    <!--<OnlineUsersList :online-users="onlineUsers" :selected-user="selectedUser" />-->
   </div>
 </template>
 
@@ -17,6 +24,7 @@
 <script>
 import OnlineUsersList from "./OnlineUsersList.vue";
 import MessagesHistory from "./MessagesHistory.vue";
+
 export default {
   components: {
       MessagesHistory,
@@ -104,11 +112,11 @@ export default {
         console.log("Closing the socket.");
         this.chatSocket.close();
       };
-      onlineUsersSelector.onchange = function() {
-        chatMessageInput.value = "/pm " + onlineUsersSelector.value + " ";
-        onlineUsersSelector.value = null;
-        chatMessageInput.focus();
-    };
+      // onlineUsersSelector.onchange = function() {
+      //   chatMessageInput.value = "/pm " + onlineUsersSelector.value + " ";
+      //   onlineUsersSelector.value = null;
+      //   chatMessageInput.focus();
+    // };
     },
     sendMessage() {
       if (this.message.length === 0) return;
@@ -125,16 +133,11 @@ export default {
 </script>
 
 <style>
-.messages {
-  display: flex;
-}
-
-.messages-history {
-  display: flex;
-  flex-direction: column;
+.form-control {
+    margin-right: 10px;
 }
 
 .messages-input-group {
-  display: flex;
+    display: flex;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
     <div className="messages-history">
-        <label htmlFor="chatLog">Room: #{{ room.name }}</label>
-        <div id="chatLog">
+        <div class="message-title">
+            <span htmlFor="chatLog">{{ room.name }}</span>
+        </div>
+        <div id="chatLog" class="chat-body">
             <ChatMessage v-for="message in messages" :key="message.id" :message="message"/>
         </div>
     </div>
@@ -37,4 +39,13 @@ export default {
 </script>
 
 <style scoped>
+.message-title {
+    padding: 15px;
+    height: 63px;
+    border-bottom: 1px solid #424242;
+}
+
+.chat-body {
+    padding: ;
+}
 </style>

@@ -26,15 +26,7 @@ export default {
 </script>
 
 <style scoped>
-.chat-message {
-  margin-bottom: 10px;
-}
-
-.private-message {
-  color: red;
-}
-
-.sender {
-  font-weight: bold;
+.public-message {
+    margin: 0 49px 0 86px;
 }
 </style>
