@@ -50,8 +50,9 @@ export default {
   },
   methods: {
     connectWebSocket() {
-      const roomName = this.room.name;
+      const roomName = this.room.name.replace(/\s/g, '');
       this.chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
+      console.log(this.chatSocket);
 
       this.chatSocket.onopen = () => {
         console.log("Successfully connected to the WebSocket.");
@@ -135,6 +136,14 @@ export default {
 <style>
 .form-control {
     margin-right: 10px;
+}
+
+.messages {
+    height: 100%;
+}
+
+.messages-container {
+    height: 100%;
 }
 
 .messages-input-group {

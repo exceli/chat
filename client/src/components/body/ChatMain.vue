@@ -7,7 +7,7 @@
         </div>
         <div class="right-block">
           <div v-if="selectedRoom" class="chat-container">
-            <ChatMessages :room="selectedRoom" />
+            <ChatMessages :room="selectedRoom" :key="selectedRoom.name" />
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@ export default {
 
 .main-container {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 90px);
   background-color: #222222;
   border: 1px solid #424242;
   border-radius: 20px;
@@ -64,5 +64,9 @@ export default {
 
 .right-block {
     width: 100%;
+}
+
+.chat-container {
+    height: 100%;
 }
 </style>

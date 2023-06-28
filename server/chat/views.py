@@ -17,9 +17,17 @@ class RoomsAPIView(generics.ListAPIView):
 class MessagesAPIView(generics.ListAPIView):
     """Представление получения истрии сообщений чата"""
 
-    queryset = Message.objects.all()
     serializer_class = MessageSerializers
     # permission_classes = permissions.IsAuthenticated
+
+    def get_queryset(self):
+        room_name = self.kwargs.get('name')
+        queryset = Message.objects.all()
+
+        if room_name:
+            queryset = queryset.filter(room__name=room_name)
+
+        return queryset
 
 
 # class RoomsView(View):

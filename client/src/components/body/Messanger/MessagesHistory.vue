@@ -46,6 +46,5 @@ export default {
 }
 
 .chat-body {
-    padding: ;
 }
 </style>
