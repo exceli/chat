@@ -20,6 +20,10 @@ class Room(models.Model):
     def __str__(self):
         return f'{self.name} ({self.get_online_count()})'
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.replace(' ', '-')
+        super().save(*args, kwargs)
+
     class Meta:
         verbose_name = 'Комната чата'
         verbose_name_plural = 'Комнаты чатов'
