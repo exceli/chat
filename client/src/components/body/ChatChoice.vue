@@ -24,17 +24,15 @@
 export default {
   data() {
     return {
-      rooms: [],    // List of rooms received from the server
-      roomName: ''  // Input field for entering room name
+      rooms: [],
+      roomName: ''
     };
   },
   mounted() {
-    // Make a request to the server to get the list of rooms
-    // Replace the API_ENDPOINT with your actual API endpoint
     fetch('http://localhost:8000/chat')
       .then(response => response.json())
       .then(data => {
-        this.rooms = data.rooms; // Assuming the response has a 'rooms' property containing the list of rooms
+        this.rooms = data.rooms;
       })
       .catch(error => {
         console.error('Failed to fetch rooms:', error);
