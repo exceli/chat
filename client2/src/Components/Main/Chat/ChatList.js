@@ -36,6 +36,7 @@ function ChatList({onRoomSelect}) {
                         onClick={() => selectRoom(room)}
                         action
                         active={activeRoom && activeRoom.name === room.name}
+                        // TODO
                     >
                         {room.name}
                     </ListGroup.Item>

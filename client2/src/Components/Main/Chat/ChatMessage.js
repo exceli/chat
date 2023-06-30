@@ -25,6 +25,7 @@ function Message({ user, content, currentUser }) {
     : messageStyles.messageContainer;
   const messageStyle = isUserMessage ? { ...messageStyles.message, backgroundColor: "#e2f2ff" } : messageStyles.message;
   const userStyle = messageStyles.user;
+  // TODO
 
   return (
     <div style={messageContainerStyle}>

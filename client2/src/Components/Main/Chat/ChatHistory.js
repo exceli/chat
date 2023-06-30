@@ -28,7 +28,7 @@ function ChatHistory({ chatLogContent, currentUser }) {
         const isUserMessage = message.user === currentUser;
         const messageStyle = isUserMessage ? { ...messageStyles.message, ...messageStyles.userMessage } : messageStyles.message;
         const userStyle = isUserMessage ? { ...messageStyles.user, ...messageStyles.userRight } : messageStyles.user;
-
+        // TODO
         return (
           <Message key={index} messageStyle={messageStyle} userStyle={userStyle} user={message.user} content={message.message} />
         );

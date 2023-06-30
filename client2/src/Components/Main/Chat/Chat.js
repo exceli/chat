@@ -9,8 +9,7 @@ function Chat({room}) {
     const chatSocketRef = useRef(null);
     const chatLogRef = useRef(null);
     const chatMessageInputRef = useRef(null);
-    const [currentUser, setCurrentUser] = useState("")
-
+    // TODO useReducer
     const connectWebSocket = () => {
         chatSocketRef.current = new WebSocket(`ws://localhost:8000/ws/chat/${room.name}/`);
 
@@ -79,7 +78,7 @@ function Chat({room}) {
             }
 
             const chatLog = chatLogRef.current;
-            chatLog.scrollTop = chatLog.scrollHeight;
+            // chatLog.scrollTop = chatLog.scrollHeight; TODO
         };
 
         chatSocketRef.current.onerror = (err) => {
@@ -117,8 +116,8 @@ function Chat({room}) {
     return (
         <div>
             <div className="messages-container">
-                <div className="messages-history" ref={chatLogRef}>
-                    <ChatHistory chatLogContent={chatLogContent} currentUser={currentUser}/>
+                <div className="messages-history" ref={chatLogRef}  style={maxHeight: maxH}>
+                    <ChatHistory chatLogContent={chatLogContent}/>
                 </div>
                 <ChatInput
                     message={message}
