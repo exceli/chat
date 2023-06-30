@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import Container from "react-bootstrap/Container";
 import ChatList from "./Chat/ChatList";
-import ChatMessages from "./Chat/ChatMessages";
+import Chat from "./Chat/Chat";
 
 function Main() {
     const [selectedRoom, setSelectedRoom] = useState(null);
 
     const handleRoomSelect = (room) => {
-        setSelectedRoom(room.name);
+        setSelectedRoom(room);
     };
 
     return (
@@ -18,7 +18,7 @@ function Main() {
                         <ChatList onRoomSelect={handleRoomSelect}/>
                     </div>
                     <div className="right-block">
-                        {selectedRoom && <ChatMessages room={selectedRoom}/>}
+                        {selectedRoom && <Chat room={selectedRoom}/>}
                     </div>
                 </div>
             </Container>
