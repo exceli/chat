@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ChatHistory from "./ChatHistory";
 import ChatInput from "./ChatInput";
 
-function Chat({room}) {
+function Chat({ room }) {
     const [chatLogContent, setChatLogContent] = useState([]);
     const [message, setMessage] = useState("");
     const [onlineUsers, setOnlineUsers] = useState([]);
@@ -27,7 +27,6 @@ function Chat({room}) {
 
         chatSocketRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log(data);
 
             switch (data.type) {
                 case "user_list":
@@ -36,40 +35,40 @@ function Chat({room}) {
                 case "user_join":
                     setChatLogContent(prevChatLogContent => [
                         ...prevChatLogContent,
-                        {type: "message", user: data.user, message: 'join the room'}
+                        { type: "message", user: data.user, message: 'join the room' }
                     ]);
                     setOnlineUsers((prevOnlineUsers) => [...prevOnlineUsers, data.user]);
                     break;
                 case "user_leave":
                     setChatLogContent(prevChatLogContent => [
                         ...prevChatLogContent,
-                        {type: "message", user: data.user, message: 'left the room.'}
+                        { type: "message", user: data.user, message: 'left the room.' }
                     ]);
                     setOnlineUsers((prevOnlineUsers) => prevOnlineUsers.filter(user => user !== data.user));
                     break;
                 case "chat_message":
                     setChatLogContent(prevChatLogContent => [
                         ...prevChatLogContent,
-                        {type: "message", user: data.user, message: data.message}
+                        { type: "message", user: data.user, message: data.message }
                     ]);
                     break;
                 case "private_message":
                     setChatLogContent(prevChatLogContent => [
                         ...prevChatLogContent,
-                        {type: "message", user: 'PM from ' + data.user, message: data.message}
+                        { type: "message", user: 'PM from ' + data.user, message: data.message }
                     ]);
                     break;
                 case "private_message_delivered":
                     setChatLogContent(prevChatLogContent => [
                         ...prevChatLogContent,
-                        {type: "message", user: 'PM to ' + data.user, message: data.message}
+                        { type: "message", user: 'PM to ' + data.user, message: data.message }
                     ]);
                     break;
                 case "chat_messages":
                     setChatLogContent(
                         data.messages
                             .reverse()
-                            .map((message) => ({type: "message", user: message.user, message: message.content}))
+                            .map((message) => ({ type: "message", user: message.user, message: message.content }))
                     );
                     break;
                 default:
@@ -96,7 +95,6 @@ function Chat({room}) {
 
     const handleSendMessage = () => {
         if (message.length === 0) return;
-        console.log(message);
         chatSocketRef.current.send(
             JSON.stringify({
                 type: "chat_message",
@@ -116,8 +114,8 @@ function Chat({room}) {
     return (
         <div>
             <div className="messages-container">
-                <div className="messages-history" ref={chatLogRef}  style={maxHeight: maxH}>
-                    <ChatHistory chatLogContent={chatLogContent}/>
+                <div className="messages-history" ref={chatLogRef}>
+                    <ChatHistory chatLogContent={chatLogContent} />
                 </div>
                 <ChatInput
                     message={message}

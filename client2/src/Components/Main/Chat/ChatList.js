@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ListGroup from "react-bootstrap/ListGroup";
 
-function ChatList({onRoomSelect}) {
+function ChatList({ onRoomSelect }) {
     const [rooms, setRooms] = useState([]);
     const [activeRoom, setActiveRoom] = useState(null);
 
@@ -36,7 +36,7 @@ function ChatList({onRoomSelect}) {
                         onClick={() => selectRoom(room)}
                         action
                         active={activeRoom && activeRoom.name === room.name}
-                        // TODO
+                    // TODO
                     >
                         {room.name}
                     </ListGroup.Item>

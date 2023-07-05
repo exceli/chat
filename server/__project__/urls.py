@@ -21,8 +21,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
     path("chat/", include("chat.urls")),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
