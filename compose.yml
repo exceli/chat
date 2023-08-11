@@ -10,13 +10,12 @@ services:
     env_file:
       - ./server/.env
     ports:
-      - '5432:5432'
+      - '5433:5432'
   web:
     build:
       context: ./
     container_name: web_app
-    command:  bash -c 'python /home/app/server/manage.py migrate --noinput &&
-              python /home/app/server/manage.py runserver 0.0.0.0:8000'
+    command: bash -c 'python /home/app/server/manage.py migrate --noinput && python /home/app/server/manage.py runserver 0.0.0.0:8000'
     volumes:
       - ./server/:/home/app/server
     depends_on:
@@ -25,7 +24,6 @@ services:
       - 8000:8000
     env_file:
       - ./server/.env
-
 
 volumes:
   database_data:
